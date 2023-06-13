@@ -35,3 +35,41 @@ function generateTable() {
   tableHTML += '</table>';
   tableContainer.innerHTML = tableHTML;
 }
+
+//Función para ordenar un arreglo aleatorio sin usar .sort()
+function sortArray() {
+  const sortedArray = document.getElementById('sortedArray');
+  const numbers = generateRandomNumbers(20, 1, 100);
+  randomArray.textContent = `Arreglo aleatorio: ` + numbers.join(', ');
+  const sortedNumbers = bubbleSort(numbers);
+  sortedArray.textContent = `Arreglo ordenado: ` + sortedNumbers.join(', ');
+}
+
+//Función para generar un arreglo con números aleatorios
+function generateRandomNumbers(length, min, max) {
+  const numbers = [];
+
+  for (let i = 0; i < length; i++) {
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    numbers.push(randomNumber);
+  }
+
+  return numbers;
+}
+
+//Función para ordenar un arreglo utilizando el algoritmo de ordenamiento de burbuja
+function bubbleSort(array) {
+  const length = array.length;
+
+  for (let i = 0; i < length - 1; i++) {
+    for (let j = 0; j < length - 1 - i; j++) {
+      if (array[j] > array[j + 1]) {
+        const temp = array[j];
+        array[j] = array[j + 1];
+        array[j + 1] = temp;
+      }
+    }
+  }
+
+  return array;
+}
