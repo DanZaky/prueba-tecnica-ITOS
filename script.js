@@ -112,3 +112,41 @@ function generateRandomLetters(length, alphabet) {
 
   return letters;
 }
+
+ //Consulta REST al API de Banxico
+ //Uso de un proxy porque la API negaba el acceso
+ fetch('https://cors-anywhere.herokuapp.com/www.banxico.org.mx/SieAPIRest/service/v1/series/SF43718/datos/',
+ {
+   method: 'GET',
+   headers: {
+     'Bmx-Token': '2d3276cc6d5d9c7b16a9fdc99282b95f97c4acf9e0e239f0ddf631b2e4c16d3b',
+     'Accept': 'application/json'
+   }
+ }
+)
+.then(response => response.json())
+.then(data => {
+ const exchangeData = data.bmx.series[0].datos;
+ const last5DaysData = exchangeData.slice(-5); // Obtener los datos de los últimos 5 días
+
+ const exchangeTable = document.getElementById('exchangeTable').getElementsByTagName('tbody')[0];
+
+ last5DaysData.forEach(dayData => {
+   const date = dayData.fecha;
+   const exchangeRate = dayData.dato;
+   const row = document.createElement('tr');
+   const dateCell = document.createElement('td');
+   const exchangeRateCell = document.createElement('td');
+
+   dateCell.textContent = date;
+   exchangeRateCell.textContent = exchangeRate;
+
+   row.appendChild(dateCell);
+   row.appendChild(exchangeRateCell);
+
+   exchangeTable.appendChild(row);
+ });
+})
+.catch(error => {
+ console.log('Error:', error);
+});
