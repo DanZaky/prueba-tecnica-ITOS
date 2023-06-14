@@ -73,3 +73,42 @@ function bubbleSort(array) {
 
   return array;
 }
+
+//Función para realizar algunas operaciones básicas entre conjuntos
+function setOperations() {
+  const setOperationsResult = document.getElementById('setOperationsResult');
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const arrayA = generateRandomLetters(10, alphabet);
+  const arrayB = generateRandomLetters(10, alphabet);
+
+  //Con el método Set quito los valores repetidos combinando ambos arreglos y con el from convierto el set en array de nuevo
+  const union = Array.from(new Set ([...arrayA, ...arrayB]));
+  //Con el método filter creo un nuevo arreglo con los elementos de B que se encuentran también en A
+  const intersection = arrayA.filter((element) => arrayB.includes(element));
+  //Con el método filter creo un nuevo arreglo con los elementos de A que no se encuentran en B
+  const difference = arrayA.filter((element) => !arrayB.includes(element));
+  //Se añaden los elementos de B que no se encuentran en A para la diferencia simétrica
+  const symmetricDifference = [...difference, ...arrayB.filter((element) => !arrayA.includes(element))];
+
+  setOperationsResult.innerHTML = `
+    Arreglo A: ${arrayA.join(', ')}<br><br>
+    Arreglo B: ${arrayB.join(', ')}<br><br>
+    Unión (A ⋃ B): ${union.join(', ')}<br>
+    Intersección (A ⋂ B): ${intersection.join(', ')}<br>
+    Diferencia (A ∆ B): ${difference.join(', ')}<br>
+    Diferencia Simétrica (A - B): ${symmetricDifference.join(', ')}
+  `;
+}
+
+//Función para generar un arreglo con letras aleatorias
+function generateRandomLetters(length, alphabet) {
+  const letters = [];
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * alphabet.length);
+    const randomLetter = alphabet[randomIndex];
+    letters.push(randomLetter);
+  }
+
+  return letters;
+}
